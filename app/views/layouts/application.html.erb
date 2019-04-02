@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en" style="height:100%;">
+  <head>
+    <!-- Required meta tags -->
+    <link rel="stylesheet" href="application.scss" type="text/scss"/>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="//brick.a.ssl.fastly.net/Roboto:400"/>
+    <%= stylesheet_link_tag "application", media: "all", "data-turbolinks-track" => true %>
+    
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    
+    
+    <title>A&M Creamery</title>
+
+  </head>
+    
+    <!-- ADDING THE NAVIGATION BAR IN THE HEADER  -->  
+    <header>
+       <nav  style="height: 100px; background-image: linear-gradient(to right, #D8BFD8, #DDA0DD, #D8BFD8);" class="navbar navbar-expand-lg navbar-light bg-danger text-light py-3 main-nav">
+          <div class="container">
+              <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+
+              <div class="collapse navbar-collapse " id="navbarSupportedContent">
+                <ul class="navbar-nav ml-auto">
+
+                  <li class="nav-item active"></li>
+                    <strong> <%= link_to 'New Store', new_store_path%></strong>
+                  </li>
+                  <li class="nav-item active"> 
+                    <strong><%= link_to 'New Employee', new_employee_path %></strong>
+                  </li>
+                  <li class="nav-item active"> 
+                    <strong><%= link_to 'New Assignment', new_assignment_path %></strong>
+                  </li>
+                  <li class="nav-item active"> 
+                    <a style="color:#e0e0eb" class="nav-link text-uppercase" href="https://test-1-msahmad.c9users.io/"><strong>HOME </strong></a>
+                  </li>
+                  
+
+                  
+                </ul>
+              </div>
+          </div>
+        </nav>
+    </header>
+    <!-- NAVIGATION BAR ENDS  -->  
+    
+    <!-- BODY WHERE RESULTS WILL BE SHOWN  -->  
+  <body style=" style= height: 100%; background-image: url('https://www.pixelstalk.net/wp-content/uploads/2016/07/Cute-Ice-Cream-Images-HD.jpg'); background-repeat: no-repeat; background-size:100% 100%; ">
+    <div class="container-fluid" style= "background-color: transparent;">
+	    <div class="row">
+		    <div class="col-md-2">
+		    </div>
+		    <div class="col-md-8">
+		        <br>
+    		    <br>
+    		    <br>
+    		    
+    		    <div class="button">
+                    <p>Click me</p>
+                  </div>
+                  
+                  
+    			<h1 style="color:white;"> 
+			    <center>A&M Creamery</center>	
+			    </h1>
+			    <br>
+			    <p>
+			    <div class="container" style="background-color:white;">
+			    <%= yield %> <br /> <br />
+			    </div>
+			    </p>
+	    	</div>
+		    <div class="col-md-2">
+		    </div>
+	    </div>  
+    </div>  
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+  </body>
+  
+  <footer style="position: absolute; bottom: 0%; width: 100%;  background-image: linear-gradient(to right, #D8BFD8, #DDA0DD, #D8BFD8);">
+    <div class="container">
+      @Mohammad Shahmeer Ahmad
+    </div>
+  </footer>
+</html>

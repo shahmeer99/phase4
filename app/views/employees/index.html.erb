@@ -1,0 +1,40 @@
+<p id="notice"><%= notice %></p>
+
+<h1 style="text-align:center;">Employees</h1>
+
+<%= link_to 'New Employee', new_employee_path %>
+
+<div style="width:900px;">
+    <table class="container">
+    	<thead>
+		<tr>
+			<th><h4 style="color:#b3b3ff;"> <center>First Name</center></h4></th>
+			<th><h4 style="color:#b3b3ff;"><center>Last Name</center></h4></th>
+			<th><h4 style="color:#b3b3ff;"><center>Ssn</center></h4></th>
+			<th><h4 style="color:#b3b3ff;"><center>Date of birth</center></h4></th>
+			<th><h4 style="color:#b3b3ff;"><center>Phone</center></h4></th>
+			<th><h4 style="color:#b3b3ff;"><center>Active</center></h4></th>
+			<th><h4 style="color:#b3b3ff;"><center></center></h4></th>
+			<th><h4 style="color:#b3b3ff;"><center></center></h4></th>
+			<th><h4 style="color:#b3b3ff;"><center></center></h4></th>
+			
+		</tr>
+    	</thead>
+    	<tbody>
+        <% @employees.each do |employee| %>
+          <tr>
+            <td bgcolor = "#f2f2f2"><center><strong><%= employee.first_name %></strong></center></td>
+            <td bgcolor = "#f2f2f2"><center><strong><%= employee.last_name %></strong></center></td>
+            <td bgcolor = "#f2f2f2"><center><strong><%= employee.ssn %></strong></center></td>
+            <td bgcolor = "#f2f2f2"><center><strong><%= employee.date_of_birth %></strong></center></td>
+            <td bgcolor = "#f2f2f2"><center><strong><%= employee.phone %></strong></center></td>
+            <td bgcolor = "#f2f2f2"><center><strong><%= employee.role %></strong></center></td>
+            <td bgcolor = "#f2f2f2"><center><strong><%= employee.active %></strong></center></td>
+            <td><%= link_to 'Show', employee %></td>
+            <td><%= link_to 'Edit', edit_employee_path(employee) %></td>
+            <td><%= link_to 'Destroy', employee, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+ </div>    
