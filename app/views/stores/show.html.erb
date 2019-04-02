@@ -1,5 +1,5 @@
 <p id="notice"><%= notice %></p>
-
+<div style="font-weight:bold; background-color:white; width:300px; padding: 12px 24px; border-radius: 6px;">
 <p>
   <strong>Name:</strong>
   <%= @store.name %>
@@ -44,6 +44,6 @@
   <strong>Active:</strong>
   <%= @store.active %>
 </p>
-
+</div>
 <%= link_to 'Edit', edit_store_path(@store) %> |
 <%= link_to 'Back', stores_path %>

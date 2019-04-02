@@ -1,5 +1,5 @@
 <p id="notice"><%= notice %></p>
-
+<div style="font-weight:bold; background-color:white; width:300px; padding: 12px 24px; border-radius: 6px;">
 <p>
   <strong>Start date:</strong>
   <%= @assignment.start_date %>
@@ -17,13 +17,13 @@
 
 <p>
   <strong>Store:</strong>
-  <%= @assignment.store %>
+  <%= @assignment.store_id %>
 </p>
 
 <p>
   <strong>Employee:</strong>
-  <%= @assignment.employee %>
+  <%= @assignment.employee_id %>
 </p>
-
+</div>
 <%= link_to 'Edit', edit_assignment_path(@assignment) %> |
 <%= link_to 'Back', assignments_path %>

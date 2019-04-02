@@ -1,4 +1,9 @@
-<%= form_with(model: assignment, local: true) do |form| %>
+<div class="row" style="background-color:white; positon:inherit;">
+  <div class="col s2">
+  </div>
+  
+  <div id="col s8 center">
+  <%= form_with(model: assignment, local: true) do |form| %>
   <% if assignment.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(assignment.errors.count, "error") %> prohibited this assignment from being saved:</h2>
@@ -10,15 +15,17 @@
       </ul>
     </div>
   <% end %>
-
-  <div class="field">
+  
+  <div class="input-field">
     <%= form.label :start_date %>
-    <%= form.date_select :start_date %>
+    <%= form.text_field :start_date, prompt: "Start Date", class: "datepicker", :value =>
+    (form.object.start_date.strftime('%B %d, %Y') if form.object.start_date != nil)%> 
   </div>
-
-  <div class="field">
+  
+  <div class="input-field">
     <%= form.label :end_date %>
-    <%= form.date_select :end_date %>
+    <%= form.text_field :end_date, prompt: "End Date", class: "datepicker", :value =>
+    (form.object.end_date.strftime('%B %d, %Y') if form.object.end_date != nil)%> 
   </div>
 
   <div class="field">
@@ -40,3 +47,8 @@
     <%= form.submit %>
   </div>
 <% end %>
+</div>
+  
+  <div class="col s2">
+  </div>
+</div>
