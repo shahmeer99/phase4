@@ -4,30 +4,44 @@
 </head>
 <body>
 
-  <div class="container">
-    <div class="section">
+  <!--<div class="container">-->
+    <!--<div class="section">-->
 
       <!--   Icon Section   -->
-      <div class="row">
-        <div class="col s12 m4">
-            <button type="button" style="position:center; text-align:center; background-color: 
-            #4CAF50; width:100px; height 25px;"><%= link_to 'STORES', stores_path %></button>
+      <!--<div class="row">-->
+          
+        <div class="button" style="position:relative; left:900px; top:0px;">
+            <p><a><%= link_to 'EMPLOYEES', employees_path %></a></p>
+        </div>
+        
+        <div class="button" style="position:relative; right:700px; top:230px;">
+            <p><a><%= link_to 'STORES', stores_path %></a></p>
+        </div>
+                  
+        <div class="button" style="position:relative; left:200px; top:-95px;">
+            <p><a><%= link_to 'ASSIGNMENTS', assignments_path %></a></p>
+        </div>
+                            
+        <!--<div class="col s12 m4">-->
+        <!--    <button type="button" style="position:center; text-align:center; background-color: -->
+        <!--    #4CAF50; width:100px; height 25px;"><%= link_to 'STORES', stores_path %></button>-->
             
-            <p class="light"> </p>
-        </div>
+            
+        <!--    <p class="light"> </p>-->
+        <!--</div>-->
 
-        <div class="col s12 m4">
-            <button type="button"><%= link_to 'EMPLOYEES', employees_path %></button>
-        </div>
+        <!--<div class="col s12 m4">-->
+        <!--    <button type="button"><%= link_to 'EMPLOYEES', employees_path %></button>-->
+        <!--</div>-->
 
-        <div class="col s12 m4">
-            <button type="button"><%= link_to 'ASSIGNMENTS', assignments_path %></button>
-        </div>
-      </div>
+        <!--<div class="col s12 m4">-->
+        <!--    <button type="button"><%= link_to 'ASSIGNMENTS', assignments_path %></button>-->
+        <!--</div>-->
+      <!--</div>-->
 
-    </div>
+    <!--</div>-->
     <br><br>
-  </div>
+  <!--</div>-->
 
   </body>
 </html>
