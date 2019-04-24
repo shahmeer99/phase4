@@ -2,6 +2,7 @@ module Contexts
   module AssignmentContexts
     # Context for assignments (assumes contexts for stores, employees)
     def create_assignments
+      puts @ed
       @assign_ed = FactoryBot.create(:assignment, employee: @ed, store: @cmu) # ended a month ago
       @assign_ben = FactoryBot.create(:assignment, employee: @ben, store: @cmu, start_date: 2.years.ago.to_date, end_date: 6.months.ago.to_date, pay_level: 3)
       @promote_ben = FactoryBot.create(:assignment, employee: @ben, store: @cmu, start_date: 6.months.ago.to_date, end_date: nil, pay_level: 4)

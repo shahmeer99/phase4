@@ -6,6 +6,9 @@ class Employee < ApplicationRecord
   # Relationships
   has_many :assignments
   has_many :stores, through: :assignments
+  has_one :user
+  
+  accepts_nested_attributes_for :user
   
   # Validations
   validates_presence_of :first_name, :last_name, :date_of_birth, :ssn, :role
@@ -26,6 +29,7 @@ class Employee < ApplicationRecord
   scope :alphabetical,    -> { order('last_name, first_name') }
   
   # Other methods
+   # Other methods
   def name
     "#{last_name}, #{first_name}"
   end
@@ -56,7 +60,7 @@ class Employee < ApplicationRecord
   
   # Callback code  (NOT DRY!!!)
   # -----------------------------
-   #private
+   private
    def reformat_phone
      phone = self.phone.to_s  # change to string in case input as all numbers 
      phone.gsub!(/[^0-9]/,"") # strip all non-digits
@@ -66,6 +70,18 @@ class Employee < ApplicationRecord
      ssn = self.ssn.to_s      # change to string in case input as all numbers 
      ssn.gsub!(/[^0-9]/,"")   # strip all non-digits
      self.ssn = ssn           # reset self.ssn to new string
+   end
+   def can_only_be_deleted_when 
+     if employee.assignments.shifts.for_employee == self.id
+        self.active = false
+        #loop through their current assignments
+        self.assignment.
+     else
+       self.destroy
+       if self.assignment != nil
+          self.assignment.destroy
+        end
+     end
    end
 end
 

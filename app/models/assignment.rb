@@ -5,6 +5,7 @@ class Assignment < ApplicationRecord
   # Relationships
   belongs_to :employee
   belongs_to :store
+  has_many :shifts
   
   # Validations
   validates_numericality_of :pay_level, only_integer: true, greater_than: 0, less_than: 7
@@ -52,5 +53,24 @@ class Assignment < ApplicationRecord
       errors.add(:store_id, "is not an active store at the creamery")
     end
   end
+  
+  def delete_future_shifts_if_terminated
+    assignment_shifts = Shift.all.where("self.assignment_id = ?", self.id)
+    if current_assignment.nil?
+      return true
+    else
+      assignment_shifts.destroy
+    end
+  end
+  
+    def terminated_if_shifts_exist
+    current_assignment = Employee.find(self.employee_id).current_assignment
+    if current_assignment.nil?
+      return true 
+    else
+      current_assignment.update_attribute(:end_date, self.start_date.to_date)
+    end
+  end
+  
 end
 

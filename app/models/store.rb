@@ -1,10 +1,12 @@
 class Store < ApplicationRecord
-# Callbacks
+  # Callbacks
   before_save :reformat_phone
   
   # Relationships
   has_many :assignments
-  has_many :employees, through: :assignments  
+  has_many :employees, through: :assignments
+  has_many :store_flavors
+  has_many :flavors, through: :store_flavors
   
   # Validations
   # make sure required fields are present
@@ -37,6 +39,11 @@ class Store < ApplicationRecord
     phone.gsub!(/[^0-9]/,"") # strip all non-digits
     self.phone = phone       # reset self.phone to new string
   end
-
+  
+  # can never be deleted, only made inactive
+    def make_inactive
+        self.active = false
+    end
 end
+
 

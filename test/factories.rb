@@ -24,8 +24,16 @@ FactoryBot.define do
     association :store
     association :employee
     start_date {1.year.ago.to_date}
-    end_date {1.month.ago.to_date}
+    end_date {nil}
     pay_level {1}
+  end
+  
+  factory :shift do
+    association :assignment
+    date {1.year.ago.to_date}
+    start_time {Time.now + 2.hours}
+    end_time {Time.now + 4.hours}
+    notes {"None"}
   end
 
 end

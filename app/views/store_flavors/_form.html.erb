@@ -1,0 +1,27 @@
+<%= form_with(model: store_flavor, local: true) do |form| %>
+  <% if store_flavor.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(store_flavor.errors.count, "error") %> prohibited this store_flavor from being saved:</h2>
+
+      <ul>
+      <% store_flavor.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :store_id %>
+    <%= form.text_field :store_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :flavor_id %>
+    <%= form.text_field :flavor_id %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

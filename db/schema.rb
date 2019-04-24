@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_18_065246) do
+ActiveRecord::Schema.define(version: 2019_04_24_130828) do
 
   create_table "assignments", force: :cascade do |t|
     t.integer "store_id"
@@ -34,6 +34,50 @@ ActiveRecord::Schema.define(version: 2019_03_18_065246) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "flavors", force: :cascade do |t|
+    t.string "name"
+    t.boolean "active"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "jobs", force: :cascade do |t|
+    t.string "name"
+    t.string "description"
+    t.boolean "active"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "shift_jobs", force: :cascade do |t|
+    t.integer "shift_id"
+    t.integer "job_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["job_id"], name: "index_shift_jobs_on_job_id"
+    t.index ["shift_id"], name: "index_shift_jobs_on_shift_id"
+  end
+
+  create_table "shifts", force: :cascade do |t|
+    t.date "date"
+    t.time "start_time"
+    t.time "end_time"
+    t.string "notes"
+    t.integer "assignment_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["assignment_id"], name: "index_shifts_on_assignment_id"
+  end
+
+  create_table "store_flavors", force: :cascade do |t|
+    t.integer "store_id"
+    t.integer "flavor_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["flavor_id"], name: "index_store_flavors_on_flavor_id"
+    t.index ["store_id"], name: "index_store_flavors_on_store_id"
+  end
+
   create_table "stores", force: :cascade do |t|
     t.string "name"
     t.string "street"
@@ -46,6 +90,15 @@ ActiveRecord::Schema.define(version: 2019_03_18_065246) do
     t.boolean "active"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "email"
+    t.string "password_digest"
+    t.integer "employee_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["employee_id"], name: "index_users_on_employee_id"
   end
 
 end
