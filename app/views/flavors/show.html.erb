@@ -1,5 +1,5 @@
 <p id="notice"><%= notice %></p>
-
+<div style="font-weight:bold; background-color:white; width:300px; padding: 12px 24px; border-radius: 6px;">
 <p>
   <strong>Name:</strong>
   <%= @flavor.name %>
@@ -9,6 +9,6 @@
   <strong>Active:</strong>
   <%= @flavor.active %>
 </p>
-
-<%= link_to 'Edit', edit_flavor_path(@flavor) %> |
-<%= link_to 'Back', flavors_path %>
+</div>
+<%= button_to "Edit", edit_flavor_path(@flavor), :method => :get %>
+<%= button_to "Back", flavors_path, :method => :get %>

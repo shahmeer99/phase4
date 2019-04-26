@@ -4,7 +4,8 @@ class FlavorsController < ApplicationController
   # GET /flavors
   # GET /flavors.json
   def index
-    @flavors = Flavor.all
+    @active_flavors = Flavor.active.alphabetical.paginate(page: params[:page]).per_page(10)
+    @inactive_flavors = Flavor.inactive.alphabetical.paginate(page: params[:page]).per_page(10)
   end
 
   # GET /flavors/1
@@ -28,7 +29,7 @@ class FlavorsController < ApplicationController
 
     respond_to do |format|
       if @flavor.save
-        format.html { redirect_to @flavor, notice: 'Flavor was successfully created.' }
+        format.html { redirect_to @flavor, notice: "Flavor #{@flavor.name} was successfully created." }
         format.json { render :show, status: :created, location: @flavor }
       else
         format.html { render :new }
@@ -42,7 +43,7 @@ class FlavorsController < ApplicationController
   def update
     respond_to do |format|
       if @flavor.update(flavor_params)
-        format.html { redirect_to @flavor, notice: 'Flavor was successfully updated.' }
+        format.html { redirect_to @flavor, notice: "Flavor #{@flavor.name} was successfully updated." }
         format.json { render :show, status: :ok, location: @flavor }
       else
         format.html { render :edit }
@@ -57,7 +58,7 @@ class FlavorsController < ApplicationController
     
     if @flavor.destroy
       respond_to do |format|
-        format.html { redirect_to flavors_url, notice: 'Flavor was successfully destroyed.' }
+        format.html { redirect_to flavors_url, notice: "Flavor #{@flavor.name} was successfully destroyed." }
         format.json { head :no_content }
       end
     else

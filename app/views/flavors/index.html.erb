@@ -1,29 +1,84 @@
+<div class="container" style="text-align:center; position:relative; top:-70px;">
+
+<button style="background-color: #d147a3 ;color: white; font-size: 16px;">
+  <a href="https://test-1-msahmad.c9users.io/flavors/new" style="text-decoration: none;color:white;">Create New Flavor</a></button>
+</div>
+
 <p id="notice"><%= notice %></p>
-
-<h1>Flavors</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Active</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @flavors.each do |flavor| %>
-      <tr>
-        <td><%= flavor.name %></td>
-        <td><%= flavor.active %></td>
-        <td><%= link_to 'Show', flavor %></td>
-        <td><%= link_to 'Edit', edit_flavor_path(flavor) %></td>
-        <td><%= link_to 'Destroy', flavor, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
+      <hr class="my-4">
+      <br>
+      <br>
+<p>
+  <% if (!@flavors.nil?) then %>
+    <% if (!@active_flavors.nil?) then %>
+        <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample1" role="button" 
+        style="background-color:#DDA0DD; width:250px; text-align: center; padding: 3px 24px;display: block; margin: 0 auto; border-radius: 12px;
+        box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19); border-color:#2d2722;" 
+        aria-expanded="false" aria-controls="collapseExample1">
+        Active Flavors
+        </a>
+        <br>
+    </p>
+    <div class="collapse" id="collapseExample1">
+        <div class="card card-body1">
+            <table class="table">
+              <thead style="background-color:#DDA0DD;color:white;">
+                <tr>
+                  <th scope="col">Name</th>
+                  <th scope="col">Active</th>
+                  <th colspan="3"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @active_flavors.each do |flavor| %>
+                  <tr>
+                    <td><%= flavor.name %></td>
+                    <td><%= flavor.active %></td>
+                    <td><%= link_to 'Show', flavor %></td>
+                    <td><%= link_to 'Edit', edit_flavor_path(flavor) %></td>
+                    <td><%= link_to 'Destroy', flavor, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+                  </tr>
+                <% end %>
+            </table>
+        </div>
+    </div>
     <% end %>
-  </tbody>
-</table>
-
+    <% else %>
+    <div>
+      <p style="text-align=center">No flavors exist</p>
+    </div>
+    <% end %>
 <br>
-
-<%= link_to 'New Flavor', new_flavor_path %>
+<% if (!@inactive_flavors.nil?) then %>
+        <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample1" role="button" 
+        style="background-color:#DDA0DD; width:250px; text-align: center; padding: 3px 24px;display: block; margin: 0 auto; border-radius: 12px;
+        box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19); border-color:#2d2722;" 
+        aria-expanded="false" aria-controls="collapseExample1">
+        Inactive Flavors
+        </a>
+        <br>
+    </p>
+    <div class="collapse" id="collapseExample1">
+        <div class="card card-body1">
+            <table class="table">
+              <thead style="background-color:#DDA0DD;color:white;">
+                <tr>
+                  <th scope="col">Name</th>
+                  <th scope="col">Active</th>
+                  <th colspan="3"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @inactive_flavors.each do |flavor| %>
+                  <tr>
+                    <td><%= flavor.name %></td>
+                    <td><%= flavor.active %></td>
+                    <td><%= link_to 'Show', flavor %></td>
+                    <td><%= link_to 'Edit', edit_flavor_path(flavor) %></td>
+                    <td><%= link_to 'Destroy', flavor, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+                  </tr>
+                <% end %>
+            </table>
+        </div>
+    </div>
+  <% end %>
