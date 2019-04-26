@@ -1,8 +1,8 @@
 class Assignment < ApplicationRecord
 # Callbacks
   before_create :end_previous_assignment
-  after_rollback :terminate_assignment, :delete_future_shifts
-  before_destroy :check_destroy_status
+  after_rollback :terminate_assignment, :delete_to_be_worked_shifts
+  before_destroy :destroy_status_checker
   
   # Relationships
   belongs_to :employee
@@ -34,7 +34,8 @@ class Assignment < ApplicationRecord
   def assignment_name
     self.employee.first_name + " " + self.employee.last_name + ", " + self.store.name
   end
-  # Private methods for callbacks and custom validations
+  
+  
   private
   
   def end_previous_assignment
@@ -44,36 +45,36 @@ class Assignment < ApplicationRecord
     end
   end
   
-  # Again, these are not DRY
   def employee_is_active_in_system
     all_active_employees = Employee.active.all.map{|e| e.id}
     unless all_active_employees.include?(self.employee_id)
-      errors.add(:employee_id, "is not an active employee at the creamery")
+      errors.add(:employee_id, "Inactive Employee")
     end
   end
   
   def store_is_active_in_system
     all_active_stores = Store.active.all.map{|s| s.id}
     unless all_active_stores.include?(self.store_id)
-      errors.add(:store_id, "is not an active store at the creamery")
+      errors.add(:store_id, "Inactive Store")
     end
   end
   
-  def delete_future_shifts
-    self.shifts.upcoming.each do |shift|
-      shift.destroy
-    end
-  end
+
   
   def terminate_assignment
     self.update_attribute(:end_date, Date.today)
   end
   
-  def check_destroy_status
+  def delete_to_be_worked_shifts
+    self.shifts.upcoming.each do |shift|
+      shift.destroy
+    end
+  end
+  
+  def destroy_status_checker
     shifts = self.shifts.past
     if !shifts.nil?
-      #cannot destroy 
-      self.errors.add(:base, 'cannot delete this assignment becasue a shift has been worked; this assignment will be terminated instead')
+      self.errors.add(:base, 'CANNOT DELETE: Shift Already Worked')
       throw(:abort)
     end
   end

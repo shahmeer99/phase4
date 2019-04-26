@@ -60,7 +60,7 @@ class EmployeeTest < ActiveSupport::TestCase
   
     # test employees must have unique ssn
     should "force employees to have unique ssn" do
-      ssn_copy = FactoryBot.build(:employee, first_name: "Steve", last_name: "Crawford", ssn: "084-35-9822")
+      ssn_copy = FactoryBot.build(:employee, first_name: "Madelene", last_name: "Edward", ssn: "084-35-9822")
       assert_equal false , ssn_copy.valid? 
     end
     
@@ -167,7 +167,7 @@ class EmployeeTest < ActiveSupport::TestCase
       @cmu3 = FactoryBot.create(:store)
       @assignment_msa3 = FactoryBot.create(:assignment, employee: @msa3, store: @cmu3, start_date: 6.months.ago.to_date, end_date: nil, pay_level: 6)
       @shift = FactoryBot.create(:shift, assignment: @assignment_msa3)
-      @shift_future = FactoryBot.create(:shift, assignment: @assignment_msa3, date: Date.today + 10.days)
+      @shift_future = FactoryBot.create(:shift, assignment: @assignment_msa3, date: Date.today + 15.days)
       assert @msa3.worked_shift?
       @msa3.destroy
       assert !@msa3.destroyed?

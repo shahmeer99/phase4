@@ -33,11 +33,11 @@ class Store < ApplicationRecord
   STATES_LIST = [['Ohio', 'OH'],['Pennsylvania', 'PA'],['West Virginia', 'WV']]
   
   #before_destroy :make_inactive, :cancel_destroy
-  before_destroy :cancel_destroy
+  before_destroy :destroy_stop
   after_rollback :make_inactive
   
   
-  def cancel_destroy
+  def destroy_stop
     self.errors.add(:base, 'cannot delete a store')
     throw(:abort)
   end
@@ -45,9 +45,7 @@ class Store < ApplicationRecord
   def make_inactive
   	 self.update_attribute(:active, false)
   end
-
-  # Callback code
-  # -----------------------------
+  
   private
   # We need to strip non-digits before saving to db
   def reformat_phone

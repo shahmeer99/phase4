@@ -8,37 +8,19 @@ class Job < ApplicationRecord
     scope :active,          -> { where(active: true) }
     scope :inactive,        -> { where(active: false) }
     scope :alphabetical,    -> { order('name') }
-    
-    #before_destroy :check_association
-    #after_rollback :make_inactive
-    
-    #def make_inactive
-      #self.active = 0 unless self.destroyed?
-      #self.save
-    #end
-    
-    #def check_association
-      #return false unless self.shift_jobs.to_a.size == 0
-    #end
-    
-    before_destroy :check_destroy_status
+
+    before_destroy :destroy_status_checker
     after_rollback :make_inactive
     
-  def check_destroy_status
-    if has_been_worked_on?
-        self.errors.add(:base, 'cannot delete a job if worked on by an employee')
-        throw(:abort)
-    end
-  end
-    
-    
-    def has_been_worked_on?
-        self.shift_jobs.size > 0
+    def destroy_status_checker
+      if !(self.shift_jobs.size <= 0)
+          self.errors.add(:base, 'Cannot Destory: Job has been worked by an employee')
+          throw(:abort)
+      end
     end
     
     def make_inactive
         self.update_attribute(:active, false)
     end
-    
 end
 

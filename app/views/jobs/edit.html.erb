@@ -2,5 +2,8 @@
 
 <%= render 'form', job: @job %>
 
-<%= link_to 'Show', @job %> |
-<%= link_to 'Back', jobs_path %>
+<%= button_to "Show", @job, :style => "background-color: #d147a3 ;color: white; font-size: 16px;",
+ :method => :get %>
+<br>
+<%= button_to "Back", jobs_path, :style => "background-color: #d147a3 ;color: white; font-size: 16px;",
+ :method => :get %>

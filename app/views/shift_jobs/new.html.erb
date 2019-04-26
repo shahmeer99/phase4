@@ -2,4 +2,5 @@
 
 <%= render 'form', shift_job: @shift_job %>
 
-<%= link_to 'Back', shift_jobs_path %>
+<%= button_to "Back", shift_jobs_path, :style => "background-color: #d147a3 ;color: white; font-size: 16px;",
+ :method => :get %>

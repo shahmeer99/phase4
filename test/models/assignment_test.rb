@@ -87,34 +87,34 @@ class AssignmentTest < ActiveSupport::TestCase
     end
 
     should "allow for a end date in the past (or today) but after the start date" do
-      @assignment_alex = FactoryBot.build(:assignment, employee: @alex, store: @oakland, start_date: 3.months.ago.to_date, end_date: 1.month.ago.to_date)
+      @assignment_alex = FactoryBot.build(:assignment, employee: @alex, store: @oakland, start_date: 4.months.ago.to_date, end_date: 2.month.ago.to_date)
       assert @assignment_alex.valid?
-      @assignment_alex2 = FactoryBot.build(:assignment, employee: @alex, store: @oakland, start_date: 3.weeks.ago.to_date, end_date: Date.current)
+      @assignment_alex2 = FactoryBot.build(:assignment, employee: @alex, store: @oakland, start_date: 4.weeks.ago.to_date, end_date: Date.current)
       assert @assignment_alex2.valid?
     end
 
     should "not allow for a end date in the future or before the start date" do
-      @assignment_ed2 = FactoryBot.build(:assignment, employee: @ed, store: @oakland, start_date: 2.weeks.ago.to_date, end_date: 3.weeks.ago.to_date)
+      @assignment_ed2 = FactoryBot.build(:assignment, employee: @ed, store: @oakland, start_date: 4.weeks.ago.to_date, end_date: 5.weeks.ago.to_date)
       assert_not_equal true,@assignment_ed2.valid?
-      @assignment_ed3 = FactoryBot.build(:assignment, employee: @ed, store: @oakland, start_date: 2.weeks.ago.to_date, end_date: 3.weeks.from_now.to_date)
+      @assignment_ed3 = FactoryBot.build(:assignment, employee: @ed, store: @oakland, start_date: 4.weeks.ago.to_date, end_date: 5.weeks.from_now.to_date)
       assert_equal false, @assignment_ed2.valid?
     end
 
     
     should "end the current assignment if it exists before adding a new assignment for an employee" do
-      @promote_kathryn = FactoryBot.create(:assignment, employee: @kathryn, store: @oakland, start_date: 1.day.ago.to_date, end_date: nil, pay_level: 4)
-      assert_equal 1.day.ago.to_date, @kathryn.assignments.first.end_date
+      @promote_kathryn = FactoryBot.create(:assignment, employee: @kathryn, store: @oakland, start_date: 2.day.ago.to_date, end_date: nil, pay_level: 4)
+      assert_equal 2.day.ago.to_date, @kathryn.assignments.first.end_date
       @promote_kathryn.destroy
     end
 
     should "identify a non-active employee as part of an invalid assignment" do
       @john1 = FactoryBot.build(:employee, first_name: "John", active: false)
-      inactive_employee = FactoryBot.build(:assignment, store: @oakland, employee: @john1, start_date: 1.day.ago.to_date, end_date: nil)
+      inactive_employee = FactoryBot.build(:assignment, store: @oakland, employee: @john1, start_date: 2.day.ago.to_date, end_date: nil)
       assert_equal false,inactive_employee.valid?
     end
     
     should "end upcoming shifts when assignment is terminated" do
-      @assignment = FactoryBot.create(:assignment, employee: @msa, store: @cmu, start_date: Date.current, end_date: nil, pay_level: 6)
+      @assignment = FactoryBot.create(:assignment, employee: @msa, store: @cmu, start_date: Date.current, end_date: nil, pay_level: 5)
       @shift = FactoryBot.create(:shift, assignment: @assignment, date: Date.tomorrow)
       @assignment.destroy
       assert_equal false, Shift.exists?(@shift.id)
@@ -122,13 +122,13 @@ class AssignmentTest < ActiveSupport::TestCase
     end
 
     should "identify a non-active store as part of an invalid assignment" do
-      inactive_store = FactoryBot.build(:assignment, store: @hazelwood, employee: @ed, start_date: 1.day.ago.to_date, end_date: nil)
+      inactive_store = FactoryBot.build(:assignment, store: @hazelwood, employee: @ed, start_date: 2.day.ago.to_date, end_date: nil)
       assert_equal false,inactive_store.valid?
     end
     
     should "terminate an assignment instead of destroying it if shifts have been worked" do
-      @assignment = FactoryBot.create(:assignment, employee: @msa, store: @cmu, start_date: Date.current, end_date: nil, pay_level: 6)
-      @shift = FactoryBot.create(:shift, assignment: @assignment, date: Date.yesterday - 10.days)
+      @assignment = FactoryBot.create(:assignment, employee: @msa, store: @cmu, start_date: Date.current, end_date: nil, pay_level: 5)
+      @shift = FactoryBot.create(:shift, assignment: @assignment, date: Date.yesterday - 2.days)
       @assignment.destroy
       assert !@assignment.destroyed?
       assert_equal 1, Assignment.past.for_employee(@msa.id).size

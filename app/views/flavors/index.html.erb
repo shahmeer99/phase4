@@ -9,7 +9,7 @@
       <br>
       <br>
 <p>
-  <% if (!@flavors.nil?) then %>
+  <% if (!@active_flavors.nil?) && (!@inactive_flavors.nil?) then %>
     <% if (!@active_flavors.nil?) then %>
         <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample1" role="button" 
         style="background-color:#DDA0DD; width:250px; text-align: center; padding: 3px 24px;display: block; margin: 0 auto; border-radius: 12px;
@@ -39,13 +39,9 @@
                     <td><%= link_to 'Destroy', flavor, method: :delete, data: { confirm: 'Are you sure?' } %></td>
                   </tr>
                 <% end %>
+              </tbody>
             </table>
         </div>
-    </div>
-    <% end %>
-    <% else %>
-    <div>
-      <p style="text-align=center">No flavors exist</p>
     </div>
     <% end %>
 <br>
@@ -78,7 +74,13 @@
                     <td><%= link_to 'Destroy', flavor, method: :delete, data: { confirm: 'Are you sure?' } %></td>
                   </tr>
                 <% end %>
+              </tbody>
             </table>
         </div>
     </div>
   <% end %>
+<% else %>
+    <div class="container" style="text-align:center;opacity: 1;">
+      <p style="text-align:center;font-size:24px;color:white;">No flavors exist</p>
+    </div>
+<% end %>

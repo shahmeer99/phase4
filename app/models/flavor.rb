@@ -8,11 +8,11 @@ class Flavor < ApplicationRecord
   scope :inactive,        -> { where(active: false) }
   scope :alphabetical,    -> { order('name') }
   
-  before_destroy :cancel_destroy
+  before_destroy :destroy_stop
   after_rollback :make_inactive
   
-  def cancel_destroy
-    self.errors.add(:base, 'cannot delete a flavor')
+  def destroy_stop
+    self.errors.add(:base, 'Cannot Delete')
     throw(:abort)
   end
   
