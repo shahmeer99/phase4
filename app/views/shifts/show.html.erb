@@ -1,5 +1,5 @@
 <p id="notice"><%= notice %></p>
-
+<div style="font-weight:bold; background-color:white; width:300px; padding: 12px 24px; border-radius: 6px;">
 <p>
   <strong>Date:</strong>
   <%= @shift.date %>
@@ -24,6 +24,9 @@
   <strong>Assignment:</strong>
   <%= @shift.assignment %>
 </p>
+</div>
 
-<%= link_to 'Edit', edit_shift_path(@shift) %> |
-<%= link_to 'Back', shifts_path %>
+<%= button_to "Edit", edit_shift_path(@shift), :style => "background-color: #d147a3 ;color: white; font-size: 16px;",
+ :method => :get %>
+<%= button_to "Back", shifts_path, :style => "background-color: #d147a3 ;color: white; font-size: 16px;",
+ :method => :get %>

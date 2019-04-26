@@ -1,4 +1,9 @@
-<%= form_with(model: shift, local: true) do |form| %>
+<div class="row" style="background-color:white; positon:inherit; border-radius: 6px;padding: 12px 6px;">
+  <div class="col s2">
+  </div>
+  
+  <div id="col s8 center">
+  <%= form_with(model: shift, local: true) do |form| %>
   <% if shift.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(shift.errors.count, "error") %> prohibited this shift from being saved:</h2>
@@ -10,20 +15,21 @@
       </ul>
     </div>
   <% end %>
-
-  <div class="field">
+  
+  <div class="input-field">
     <%= form.label :date %>
-    <%= form.date_select :date %>
+    <%= form.text_field :date, prompt: "Date", class: "datepicker", :value =>
+    (form.object.date.strftime('%B %d, %Y') if form.object.date != nil)%> 
   </div>
 
   <div class="field">
     <%= form.label :start_time %>
-    <%= form.time_select :start_time %>
+    <%= form.text_field :start_time %>
   </div>
 
   <div class="field">
     <%= form.label :end_time %>
-    <%= form.time_select :end_time %>
+    <%= form.text_field :end_time %>
   </div>
 
   <div class="field">
@@ -32,11 +38,17 @@
   </div>
 
   <div class="field">
-    <%= form.label :assignment_id %>
-    <%= form.text_field :assignment_id %>
+        <%= form.label :assignment_id %>
+        <%= form.collection_select(:assignment_id, Assignment.all, :start_date, :end_date, { :prompt => 'Select an Assignment', :selected => @shift.assignment_id }, { class: 'form-control' }) %>
   </div>
-
+<br>
   <div class="actions">
-    <%= form.submit %>
+    <%= button_to "Create Assignment", form.submit, :style => "background-color: #d147a3 ;color: white; font-size: 16px;",
+ :method => :get %>
   </div>
 <% end %>
+</div>
+  
+  <div class="col s2">
+  </div>
+</div>
