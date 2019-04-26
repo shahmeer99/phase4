@@ -24,7 +24,7 @@ gem 'jbuilder', '~> 2.5'
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
 # Use ActiveModel has_secure_password
-# gem 'bcrypt', '~> 3.1.7'
+gem 'bcrypt', '~> 3.1.7'
 
 # Use ActiveStorage variant
 # gem 'mini_magick', '~> 4.8'
@@ -34,13 +34,12 @@ gem 'jbuilder', '~> 2.5'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.1.0', require: false
-
+gem 'time_date_helpers', '0.0.2'
 gem 'validates_timeliness'
 gem 'will_paginate'
 gem 'simple_form'
+gem 'jquery-rails'
 gem 'materialize-sass'
-gem 'mini_racer'
-gem 'test-unit'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -68,9 +67,9 @@ group :test do
 end
 group :test do
   gem 'factory_bot_rails'
-  gem 'shoulda', '3.5.0'
-  gem 'shoulda-matchers', '2.8.0'
-  gem 'simplecov', '0.15.1'
+  gem 'shoulda'
+  gem 'shoulda-matchers'
+  gem 'simplecov'
   
   
 end

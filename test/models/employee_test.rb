@@ -73,15 +73,15 @@ class EmployeeTest < ActiveSupport::TestCase
     end
     
     # test scope younger_than_18
-    should "show there are four employees over 18" do
-      assert_equal 4, Employee.is_18_or_older.size
-      assert_equal ["Gruberman", "Heimann", "Janeway", "Sisko"], Employee.is_18_or_older.map{|e| e.last_name}.sort
+    should "show there are five employees over 18" do
+      assert_equal 5, Employee.is_18_or_older.size
+      assert_equal ["Ahmad", "Gruberman", "Heimann", "Janeway", "Sisko"], Employee.is_18_or_older.map{|e| e.last_name}.sort
     end
     
     # test the scope 'active'
-    should "shows that there are five active employees" do
-      assert_equal 5, Employee.active.size
-      assert_equal ["Crawford", "Gruberman", "Heimann", "Janeway", "Sisko"], Employee.active.map{|e| e.last_name}.sort
+    should "shows that there are six active employees" do
+      assert_equal 6, Employee.active.size
+      assert_equal ["Ahmad", "Crawford", "Gruberman", "Heimann", "Janeway", "Sisko"], Employee.active.map{|e| e.last_name}.sort
     end
     
     # test the scope 'inactive'
@@ -97,9 +97,9 @@ class EmployeeTest < ActiveSupport::TestCase
     end
     
     # test the scope 'managers'
-    should "shows that there are 2 managers: Ben and Kathryn" do
-      assert_equal 2, Employee.managers.size
-      assert_equal ["Janeway", "Sisko"], Employee.managers.map{|e| e.last_name}.sort
+    should "shows that there are 3 managers: Ben and Kathryn" do
+      assert_equal 3, Employee.managers.size
+      assert_equal ["Ahmad", "Janeway", "Sisko"], Employee.managers.map{|e| e.last_name}.sort
     end
     
     # test the scope 'admins'
@@ -126,6 +126,9 @@ class EmployeeTest < ActiveSupport::TestCase
       assert_equal @assign_cindy, @cindy.current_assignment # only 1 assignment ever
       assert_equal @promote_ben, @ben.current_assignment # 2 assignments, returns right one
       # person had assignments but has no current assignment
+      
+      
+      #CHECK
       assert_nil @ed.current_assignment
       @assign_cindy.update_attribute(:end_date, Date.current)
       @cindy.reload
@@ -146,6 +149,15 @@ class EmployeeTest < ActiveSupport::TestCase
       assert_equal "4122682323", @ben.phone
     end
     
+    should "show that an employee is only deleted if he works no shifts" do
+      @cmu = FactoryBot.create(:store)
+      @msa2 = FactoryBot.create(:employee, first_name: "m", last_name: "sa", ssn: "134-35-9822", date_of_birth: 19.years.ago.to_date)
+      @assignment_msa = FactoryBot.create(:assignment, employee: @msa2, store: @cmu, start_date: 6.months.ago.to_date, end_date: nil, pay_level: 6)
+      @msa2.destroy
+      assert @msa2.destroyed?
+      @cmu.destroy
+    end
+    
     # test the method 'over_18?'
     should "shows that over_18? boolean method works" do
       assert @ed.over_18?
@@ -158,5 +170,17 @@ class EmployeeTest < ActiveSupport::TestCase
       assert_equal 17, @cindy.age
       assert_equal 30, @kathryn.age
     end
+    
+    should "show that an employee is not deleted if he work shifts" do
+      @msa3 = FactoryBot.create(:employee, first_name: "m", last_name: "sa", ssn: "134-35-9822", date_of_birth: 19.years.ago.to_date)
+      @cmu3 = FactoryBot.create(:store)
+      @assignment_msa3 = FactoryBot.create(:assignment, employee: @msa3, store: @cmu3, start_date: 6.months.ago.to_date, end_date: nil, pay_level: 6)
+      @shift = FactoryBot.create(:shift, assignment: @assignment_msa3)
+      # @shift_future = FactoryBot.create(:shift, assignment: @assignment_msa, date: Date.today + 10.days)
+      assert @msa3.worked_shift?
+      @msa3.destroy
+      assert !@msa3.destroyed?
+      @cmu3.destroy
+    end 
   end
 end

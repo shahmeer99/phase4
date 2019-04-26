@@ -5,15 +5,15 @@ class UserTest < ActiveSupport::TestCase
   should belong_to(:employee)
   
   #validations
-  should allow_value("msa@andrew.cmu.edu").for(:email)
-  should allow_value("msaas@gmail.com").for(:email)
-  should allow_value("m_a@hotmail.com").for(:email)
+  should allow_value("msahmad@andrew.cmu.edu").for(:email)
+  should allow_value("mshahmeer99@gmail.com").for(:email)
+  should allow_value("shah_meer@hotmail.com").for(:email)
   
   should_not allow_value("bad").for(:email)
   should_not allow_value(nil).for(:email)
-  should_not allow_value("12345").for(:email)
-  should_not allow_value("sadfafsgasfdf123131").for(:email)
-  should_not allow_value("com.msa.@.c").for(:email)
+  should_not allow_value("1234").for(:email)
+  should_not allow_value("sadfdgd6t7a31").for(:email)
+  should_not allow_value("com.msahmad.@.c").for(:email)
   
   
   #create contexts
@@ -32,7 +32,7 @@ class UserTest < ActiveSupport::TestCase
     #test scopes and methods 
     should "Assure that user can only be added to an active employee" do
       @employee = FactoryBot.build(:employee)
-      @user = FactoryBot.build(:user, email:"user@cmu.edu", employee: @employee)
+      @user = FactoryBot.build(:user, email:"user1@cmu.edu", employee: @employee)
       assert @user.employee_is_active_in_system
       assert @test_user.valid?
       @bad = FactoryBot.build(:user, email:"bad@cmu.edu", employee: @inactive)
@@ -47,8 +47,8 @@ class UserTest < ActiveSupport::TestCase
     end
     
     should "make sure user_role function works" do
-      @employee = FactoryBot.build(:employee, first_name: "test", last_name: "user", ssn: "123-67-8236", phone: "949-675-2317", role: "manager")
-      @user = FactoryBot.build(:user, email:"test@cmu.edu", employee: @employee) 
+      @employee = FactoryBot.build(:employee, first_name: "Shahmeer", last_name: "Ahmad", ssn: "123-67-8236", phone: "949-675-2317", role: "manager")
+      @user = FactoryBot.build(:user, email:"msahmad@cmu.edu", employee: @employee) 
       assert_equal "manager", @user.user_role
       @user.destroy
       @employee.destroy

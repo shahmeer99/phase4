@@ -1,3 +1,5 @@
+require 'date'
+require 'time'
 FactoryBot.define do
  
   factory :employee do
@@ -32,8 +34,33 @@ FactoryBot.define do
     association :assignment
     date {1.year.ago.to_date}
     start_time {Time.now + 2.hours}
-    end_time {Time.now + 4.hours}
     notes {"None"}
   end
+  
+   factory :job do
+    name {"Janitor"}
+    description {"Mop floors, clean tables/bathrooms, etc"}
+    active {true}
+  end
+  
+  factory :shift_job do
+    association :shift
+  end
 
+  factory :flavor do
+    name {"Vanilla"}
+    active {true}
+  end
+
+  factory :user do
+    association :employee
+    email {"edg@cmu.edu"}
+    password_digest {"edg"}
+  end
+
+  factory :store_flavor do
+    association :store
+    association :flavor
+  end
+  
 end

@@ -54,10 +54,16 @@ class FlavorsController < ApplicationController
   # DELETE /flavors/1
   # DELETE /flavors/1.json
   def destroy
-    @flavor.destroy
-    respond_to do |format|
-      format.html { redirect_to flavors_url, notice: 'Flavor was successfully destroyed.' }
-      format.json { head :no_content }
+    
+    if @flavor.destroy
+      respond_to do |format|
+        format.html { redirect_to flavors_url, notice: 'Flavor was successfully destroyed.' }
+        format.json { head :no_content }
+      end
+    else
+      respond_to do |format|
+        format.html { redirect_to flavors_url, alert: " #{@flavor.errors[:base]}"}
+      end
     end
   end
 

@@ -1,12 +1,23 @@
 class User < ApplicationRecord
-  #when created, must be connected to an employee who is active in the system
-  before_create 
-  # Relationships
-  belongs_to :employee
   
+  belongs_to :employee
   has_secure_password
   
-  #validations
-  validates_presence_of :email, uniqueness: true, format: { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i }
-  validates_presence_of :password_digest #, length: {minimum: 5}
+  # Validations
+  validates_uniqueness_of :email, :employee_id
+  validates_presence_of :password_digest, on: :create
+  validate :employee_is_active_in_system, on: :create, on: :update
+  validates_format_of :email, with: /\A[\w]([^@\s,;]+)@(([\w-]+\.)+(com|edu|org|net|gov|mil|biz|info))\z/i, message: "is not a valid format"
+  
+  
+  def employee_is_active_in_system
+    all_active_employees = Employee.active.map(&:id)
+    unless all_active_employees.include?(self.employee_id)
+      errors.add(:employee_id, "cannot be created. cannot create a user for an inactive employee. Please make this employee active")
+    end
+  end
+  
+  def user_role 
+    self.employee.role
+  end
 end

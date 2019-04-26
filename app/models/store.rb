@@ -1,12 +1,15 @@
 class Store < ApplicationRecord
-  # Callbacks
+# Callbacks
   before_save :reformat_phone
+  #before_destroy :cannot_delete
+  
   
   # Relationships
   has_many :assignments
-  has_many :employees, through: :assignments
+  has_many :employees, through: :assignments  
   has_many :store_flavors
   has_many :flavors, through: :store_flavors
+  has_many :shifts, through: :assignments
   
   # Validations
   # make sure required fields are present
@@ -29,7 +32,20 @@ class Store < ApplicationRecord
   # Misc Constants
   STATES_LIST = [['Ohio', 'OH'],['Pennsylvania', 'PA'],['West Virginia', 'WV']]
   
+  #before_destroy :make_inactive, :cancel_destroy
+  before_destroy :cancel_destroy
+  after_rollback :make_inactive
   
+  
+  def cancel_destroy
+    self.errors.add(:base, 'cannot delete a store')
+    throw(:abort)
+  end
+
+  def make_inactive
+  	 self.update_attribute(:active, false)
+  end
+
   # Callback code
   # -----------------------------
   private
@@ -40,10 +56,5 @@ class Store < ApplicationRecord
     self.phone = phone       # reset self.phone to new string
   end
   
-  # can never be deleted, only made inactive
-    def make_inactive
-        self.active = false
-    end
+
 end
-
-

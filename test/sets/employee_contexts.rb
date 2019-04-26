@@ -8,6 +8,7 @@ module Contexts
       @ben = FactoryBot.create(:employee, first_name: "Ben", last_name: "Sisko", role: "manager", phone: "412-268-2323")
       @kathryn = FactoryBot.create(:employee, first_name: "Kathryn", last_name: "Janeway", role: "manager", date_of_birth: 30.years.ago.to_date)
       @alex = FactoryBot.create(:employee, first_name: "Alex", last_name: "Heimann", role: "admin")
+      @msa = FactoryBot.create(:employee, first_name: "Shahmeer", last_name: "Ahmad", role: "manager")
     end
     
     def remove_employees
@@ -17,6 +18,7 @@ module Contexts
       @ben.destroy
       @kathryn.destroy
       @alex.destroy
+      @msa.destroy
     end
 
     def create_additional_employees

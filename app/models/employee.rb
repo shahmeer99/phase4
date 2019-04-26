@@ -6,8 +6,8 @@ class Employee < ApplicationRecord
   # Relationships
   has_many :assignments
   has_many :stores, through: :assignments
-  has_one :user
-  
+  has_many :shifts, through: :assignments
+  has_one :user, dependent: :destroy
   accepts_nested_attributes_for :user
   
   # Validations
@@ -29,7 +29,6 @@ class Employee < ApplicationRecord
   scope :alphabetical,    -> { order('last_name, first_name') }
   
   # Other methods
-   # Other methods
   def name
     "#{last_name}, #{first_name}"
   end
@@ -57,10 +56,29 @@ class Employee < ApplicationRecord
   # Misc Constants
   ROLES_LIST = [['Employee', 'employee'],['Manager', 'manager'],['Administrator', 'admin']]
   
+  before_destroy :check_destroy_status
+  after_rollback :make_inactive, :terminate_assignment, :delete_future_shifts
+  #after_destroy :delete_assignment
   
-  # Callback code  (NOT DRY!!!)
-  # -----------------------------
-   private
+  
+  
+  def check_destroy_status
+    if worked_shift?
+      #do something, cannot delete 
+      self.errors.add(:base, 'cannot delete this employee')
+      throw(:abort)
+    else
+      #delete 
+      self.delete_assignment
+    end
+  end 
+  
+  def worked_shift?
+    shifts = Shift.for_employee(self.id)
+    shifts.to_a.size > 0
+  end
+  
+   #private
    def reformat_phone
      phone = self.phone.to_s  # change to string in case input as all numbers 
      phone.gsub!(/[^0-9]/,"") # strip all non-digits
@@ -71,17 +89,31 @@ class Employee < ApplicationRecord
      ssn.gsub!(/[^0-9]/,"")   # strip all non-digits
      self.ssn = ssn           # reset self.ssn to new string
    end
-   def can_only_be_deleted_when 
-     if employee.assignments.shifts.for_employee == self.id
-        self.active = false
-        #loop through their current assignments
-        self.assignment.
-     else
-       self.destroy
-       if self.assignment != nil
-          self.assignment.destroy
-        end
-     end
+   
+   def delete_assignment
+    assignment = self.assignments.current.first
+    if !assignment.nil?
+      self.assignments.current.first.delete
+    end
+   end
+   
+   def make_inactive 
+    self.update_attribute(:active, false)
+   end
+   
+   def terminate_assignment
+    assignment = self.assignments.current.first
+    if !assignment.nil?
+      assignment.update_attribute(:end_date, Date.today)
+    end
+   end
+   
+   def delete_future_shifts
+    Shift.for_employee(self.id).upcoming.each do |shift|
+        shift.delete
+    end
    end
 end
+   
+
 

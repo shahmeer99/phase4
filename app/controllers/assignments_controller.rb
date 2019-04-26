@@ -1,10 +1,11 @@
+#most of this is self explanitory 
 class AssignmentsController < ApplicationController
   before_action :set_assignment, only: [:show, :edit, :update, :destroy]
 
   # GET /assignments
   # GET /assignments.json
   def index
-    @assignments = Assignment.all
+    @assignments = Assignment.all.paginate(:page => params[:page]).per_page(10) #only 10 per page 
   end
 
   # GET /assignments/1

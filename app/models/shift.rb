@@ -1,65 +1,73 @@
 class Shift < ApplicationRecord
-  # Callbacks
-  before_create :end_time_three_hours
-  
-  #relationship
+  before_create :current_assignment_only 
+  after_create :end_time_change 
+  before_destroy :check_destroy_status
+    
   belongs_to :assignment
+  has_one :employee, through: :assignment
+  has_one :store, through: :assignment
   has_many :shift_jobs
   has_many :jobs, through: :shift_jobs
   
-  # Validations
-  # make sure required fields are present
-  validates_presence_of :start_time
-  validates_date :date
-  validates_presence_of :assignment_id, on: :update
-  #ensure that end_time is after start_time and that dates are either today or sometime in the future for new shifts
-  validates_date :date, on_or_after: lambda { Date.current }, on_or_after_message: "should be in the future for new shifts"
-  validates_time :end_time, after: :start_time, allow_blank: true
-  #be added to only current assignments, not past assignments
-  validate :assignment_is_current_in_system, on: :create
-  validates_presence_of :assignment_id, on: :update
+  validates_presence_of :date, :start_time, :assignment_id
+  #validates_time :end_time, :after => :start_time, allow_blank: true
+  #validates_date :date, :on_or_after => Date.current
   
-  # Scopes (store_id) { where("store_id = ?", store_id) }
-  #scope :completed,       -> { where(count((job_id) {where(job_id) })>= 1) } #no
-  scope :incomplete,       -> { where(end_date: nil) } #no
-  scope :for_store,     ->(store_id) { where("store_id = ?", store_id) } 
-  scope :for_employee,  ->(employee_id) { where("employee_id = ?", employee_id) }
-  scope :past,          -> { where(start_date <= Date.current) }
-  scope :upcoming,       -> { where(start_date >= Date.current) }
-  scope :for_next_days,       ->(days) { where(start_date >= Date.current) } #no
-  scope :for_past_days,       -> { where(end_date: nil) } #no
-  scope :by_store,      -> { joins(:store).order('name') } 
-  scope :by_employee,   -> { joins(:employee).order('last_name, first_name') }
-
-  #methods
-  def assignment_is_current_in_system
-    all_current_assignments = Assignment.current.all.map{|e| e.id}
-    unless all_current_assignments.include?(self.assignment_id)
-      errors.add(:assignment_id, "is not an current assignment at the creamery")
+  
+  scope :completed,     -> { joins(:shift_jobs) }
+  scope :incompleted,   -> { joins("LEFT JOIN shift_jobs ON shift_id")}
+  scope :for_store,     -> (store_id) { joins(:assignment).where("store_id = ?", store_id) }
+  scope :for_employee,  -> (employee_id) { joins(:assignment).where("employee_id = ?", employee_id) }
+  scope :past,          -> { where("date < ?", Date.current) }
+  scope :upcoming,      -> { where("date >= ?", Date.current) }
+  scope :for_next_days, -> (next_days) { where("date between ? and ?", Date.current, Date.current + next_days) }
+  scope :for_past_days, -> (past_days) { where("date between ? and ?", Date.current - past_days, Date.current - 1) }
+  scope :by_store,      -> { joins(:store).order("stores.name") }
+  scope :by_employee,   -> { joins(:employee).order("employees.last_name, employees.first_name") }
+  scope :chronological, -> { order('date ASC') }
+  
+  
+  
+  def completed?
+      !self.shift_jobs.nil?
+  end
+  
+  
+  def start_now
+  	self.update_attribute(:start_time, Time.now)
+  end
+  
+  def end_now
+    self.update_attribute(:end_time, Time.now)
+  end
+  
+  
+  def current_assignment_only
+    assignments = Assignment.current.map{|assignment| assignment.id}
+    if assignments.include?(self.assignment_id)
+      #can be added, do nothing   
+      #return true
+    else
+      #this shift is being added to a past assignment which is not allowed
+      self.errors.add(:base, 'cannot add a shift to a past assignment')
+      throw(:abort)
     end
   end
   
-  #have a method called 'completed?' 
-  #which returns true or false depending on whether or not there are any jobs associated with that particular shift
-  def completed?
-    
+  def check_destroy_status
+    if self.date >= Date.current
+      #can be deleted, do nothing
+    else
+      #cannot delete
+      self.errors.add(:base, 'cannot delete a past shift')
+      throw(:abort)
+    end
   end
   
-  #should have a method called 'start_now' which updates the shift's start time to be the current time in the database
-  def start_now
-    self.start_time = Time.now
+  def end_time_change 
+    self.update_attribute(:end_time, self.start_time + 3.hours)
   end
   
-  #should have a method called 'end_now' which updates the shift's end time to be the current time in the database
-  def end_now
-    self.end_time = Time.now
-  end
   
-  # Callback code
-  private
-  #new shifts should have a callback which automatically sets the end time to three hours after the start time
-  def end_time_three_hours
-    self.end_time = 3 + self.start_time
-  end
   
 end

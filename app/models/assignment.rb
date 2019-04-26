@@ -1,6 +1,8 @@
 class Assignment < ApplicationRecord
 # Callbacks
   before_create :end_previous_assignment
+  after_rollback :terminate_assignment, :delete_future_shifts
+  before_destroy :check_destroy_status
   
   # Relationships
   belongs_to :employee
@@ -27,14 +29,17 @@ class Assignment < ApplicationRecord
   scope :for_pay_level, ->(pay_level) { where("pay_level = ?", pay_level) }
   scope :for_role,      ->(role) { joins(:employee).where("role = ?", role) }
 
+
+
+  def assignment_name
+    self.employee.first_name + " " + self.employee.last_name + ", " + self.store.name
+  end
   # Private methods for callbacks and custom validations
-  private  
+  private
   
   def end_previous_assignment
     current_assignment = Employee.find(self.employee_id).current_assignment
-    if current_assignment.nil?
-      return true 
-    else
+    if !current_assignment.nil?
       current_assignment.update_attribute(:end_date, self.start_date.to_date)
     end
   end
@@ -54,23 +59,24 @@ class Assignment < ApplicationRecord
     end
   end
   
-  def delete_future_shifts_if_terminated
-    assignment_shifts = Shift.all.where("self.assignment_id = ?", self.id)
-    if current_assignment.nil?
-      return true
-    else
-      assignment_shifts.destroy
+  def delete_future_shifts
+    self.shifts.upcoming.each do |shift|
+      shift.destroy
     end
   end
   
-    def terminated_if_shifts_exist
-    current_assignment = Employee.find(self.employee_id).current_assignment
-    if current_assignment.nil?
-      return true 
-    else
-      current_assignment.update_attribute(:end_date, self.start_date.to_date)
-    end
+  def terminate_assignment
+    self.update_attribute(:end_date, Date.today)
   end
   
+  def check_destroy_status
+    shifts = self.shifts.past
+    if !shifts.nil?
+      #cannot destroy 
+      self.errors.add(:base, 'cannot delete this assignment becasue a shift has been worked; this assignment will be terminated instead')
+      throw(:abort)
+    end
+  end
 end
+
 
