@@ -1,5 +1,6 @@
 <p id="notice"><%= notice %></p>
-
+<div style="font-weight:bold; background-color:white; width:300px; padding: 12px 24px; border-radius: 6px;">
+<p>
 <p>
   <strong>Email:</strong>
   <%= @user.email %>
@@ -15,5 +16,9 @@
   <%= @user.employee %>
 </p>
 
-<%= link_to 'Edit', edit_user_path(@user) %> |
-<%= link_to 'Back', users_path %>
+</div>
+
+<%= button_to "Edit", edit_user_path(@user), :style => "background-color: #d147a3 ;color: white; font-size: 16px;",
+ :method => :get %>
+<%= button_to "Back", users_path, :style => "background-color: #d147a3 ;color: white; font-size: 16px;",
+ :method => :get %>
