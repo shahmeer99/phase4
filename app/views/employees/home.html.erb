@@ -1,29 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <style>
+  
+.wrapper {
+  display: grid;
+  grid-template-columns: 300px 300px 300px;
+  grid-gap: 50px;
+  color: #444;
+  margin-left:100px;
+}
+
+.box {
+  color: #fff;
+  border-radius: 5px;
+
+}
+</style>
 </head>
 <body>
-        <div class="col s12 m4">
-          <div class="icon-block">
-            <h1 class="center light-blue-text"><i class="material-icons">person</i></h1>
+  
+  <div class="wrapper">
+    <div class="box a">
+      <div class="circleBase type1" style="width: 170px;height: 170px;background-color:#e8eaed;border: 3px ;border-radius: 50%;">
+        <div class="icon-block">
+          <h1 class="center light-blue-text"><i class="material-icons">person</i></h1>
             <h2 class="center"><%= link_to 'Employee', employees_path %></h2>
-          </div>
-        </div>
-        
-         <div class="col s12 m4" style="position:relative; bottom:-350px;">
-          <div class="icon-block">
-            <h1 class="center light-blue-text"><i class="material-icons">domain</i></h1>
-            <h2 class="center"><%= link_to 'Stores', stores_path %></h2>
-          </div>
-        </div>
-
-        <div class="col s12 m4">
-          <div class="icon-block">
-            <h1 class="center light-blue-text"><i class="material-icons">business_center</i></h1>
-            <h2 class="center"><%= link_to 'Assignment', assignments_path %></h2>
-          </div>
         </div>
       </div>
+    </div>
+    <div class="box b">
+      <div class="circleBase type1" style="width: 170px;height: 170px;background-color:#e8eaed;border: 3px ;border-radius: 50%;">
+      <div class="icon-block">
+          <h1 class="center light-blue-text"><i class="material-icons">domain</i></h1>
+          <h2 class="center"><%= link_to 'Stores', stores_path %></h2>
+        </div>
+      </div>
+    </div>
+    <div class="box c">
+      <div class="circleBase type1" style="width: 170px;height: 170px;background-color:#e8eaed;border: 3px ;border-radius: 50%;">
+        <div class="icon-block">
+            <h1 class="center light-blue-text"><i class="material-icons">business_center</i></h1>
+            <h2 class="center"><%= link_to 'Assignment', assignments_path %></h2>
+        </div>
+      </div>
+    </div>
+    <div class="box d">
+      <div class="circleBase type1" style="width: 170px;height: 170px;background-color:#e8eaed;border: 3px ;border-radius: 50%;">
+        <div class="icon-block">
+          <h1 class="center light-blue-text"><i class="material-icons">gesture</i></h1>
+          <h2 class="center"><%= link_to 'Flavor', flavors_path %></h2>
+        </div>
+      </div>
+    </div>
+    <div class="box e">
+      <div class="circleBase type1" style="width: 170px;height: 170px;background-color:#e8eaed;border: 3px ;border-radius: 50%;">
+        <div class="icon-block">
+          <h1 class="center light-blue-text"><i class="material-icons">settings</i></h1>
+          <h2 class="center"><%= link_to 'Job', jobs_path %></h2>
+        </div>
+      </div>
+    </div>
+    <div class="box f">
+      <div class="circleBase type1" style="width: 170px;height: 170px;background-color:#e8eaed;border: 3px ;border-radius: 50%;">
+        <div class="icon-block">
+          <h1 class="center light-blue-text"><i class="material-icons">book</i></h1>
+          <h2 class="center"><%= link_to 'Shift', shifts_path %></h2>
+        </div>
+      </div>
+    </div>
+    <div class="box f">
+      <div class="circleBase type1" style="width: 170px;height: 170px;background-color:#e8eaed;border: 3px ;border-radius: 50%;">
+        <div class="icon-block">
+          <h1 class="center light-blue-text"><i class="material-icons">access_time</i></h1>
+          <h2 class="center"><%= link_to 'Shift Job', shift_jobs_path %></h2>
+        </div>
+      </div>
+    </div>
+    <div class="box f">
+      <div class="circleBase type1" style="width: 170px;height: 170px;background-color:#e8eaed;border: 3px ;border-radius: 50%;">
+        <div class="icon-block">
+          <h1 class="center light-blue-text"><i class="material-icons">colorize</i></h1>
+          <h2 class="center"><%= link_to 'Store Flavor', store_flavors_path %></h2>
+        </div>
+      </div>
+    </div>
+    <div class="box f">
+      <div class="circleBase type1" style="width: 170px;height: 170px;background-color:#e8eaed;border: 3px ;border-radius: 50%;">
+        <div class="icon-block">
+          <h1 class="center light-blue-text"><i class="material-icons">account_box</i></h1>
+          <h2 class="center"><%= link_to 'User', users_path %></h2>
+        </div>
+      </div>
+    </div>
+  </div>
+
     <br><br>
   <!--</div>-->
 

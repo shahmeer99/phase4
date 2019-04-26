@@ -45,6 +45,13 @@
     <%= form.label :role %>
     <%= form.text_field :role %>
   </div>
+  
+  <%= form.fields_for :user do |field|%>
+    <%= field.label "Email" %>
+    <%= field.text_field :email %>
+    <%= field.label "Password" %>
+    <%= field.password_field :password %>
+  <% end %>
 
   <div class="field">
   <label>
@@ -53,9 +60,9 @@
   </label>
   </div>
 <br>
+
   <div class="actions">
-    <%= button_to "Create Employee", form.submit, :style => "background-color: #d147a3 ;color: white; font-size: 16px;",
- :method => :get %>
+    <%= button_to "Create Employee", form.submit, :style => "background-color: #d147a3 ;color: white; font-size: 16px;", :method => :get %>
   </div>
 <% end %>
 </div>
