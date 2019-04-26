@@ -2,5 +2,6 @@
 
 <%= render 'form', employee: @employee %>
 
-<%= link_to 'Show', @employee %> |
-<%= link_to 'Back', employees_path %>
+<%= button_to "Show", @employee, :method => :get %> 
+<br>
+<%= button_to "Back", employees_path, :method => :get %>

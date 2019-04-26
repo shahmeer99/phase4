@@ -4,12 +4,16 @@ class EmployeesController < ApplicationController
   # GET /employees
   # GET /employees.json
   def index
-    @employees = Employee.all.paginate(:page => params[:page]).per_page(10)
+    @active_employees = Employee.active.alphabetical.paginate(page: params[:page]).per_page(10)
+    @inactive_employees = Employee.inactive.alphabetical.paginate(page: params[:page]).per_page(10)
   end
 
   # GET /employees/1
   # GET /employees/1.json
   def show
+    # get the assignment history for this employee
+    @assignments = @employee.assignments.chronological.paginate(page: params[:page]).per_page(5)
+    # get upcoming shifts for this employee (later)  
   end
 
   # GET /employees/new
@@ -29,7 +33,7 @@ class EmployeesController < ApplicationController
 
     respond_to do |format|
       if @employee.save
-        format.html { redirect_to @employee, notice: 'Employee was successfully created.' }
+        format.html { redirect_to @employee, notice: "Successfully created #{@employee.proper_name}." }
         format.json { render :show, status: :created, location: @employee }
       else
         format.html { render :new }
@@ -43,7 +47,7 @@ class EmployeesController < ApplicationController
   def update
     respond_to do |format|
       if @employee.update(employee_params)
-        format.html { redirect_to @employee, notice: 'Employee was successfully updated.' }
+        format.html { redirect_to @employee, notice: "Successfully updated #{@employee.proper_name}." }
         format.json { render :show, status: :ok, location: @employee }
       else
         format.html { render :edit }
@@ -57,7 +61,7 @@ class EmployeesController < ApplicationController
   def destroy
     @employee.destroy
     respond_to do |format|
-      format.html { redirect_to employees_url, notice: 'Employee was successfully destroyed.' }
+      format.html { redirect_to employees_url, notice: "Successfully removed #{@employee.proper_name} from the AMC system." }
       format.json { head :no_content }
     end
   end

@@ -2,5 +2,6 @@
 
 <%= render 'form', assignment: @assignment %>
 
-<%= link_to 'Show', @assignment %> |
-<%= link_to 'Back', assignments_path %>
+<%= button_to "Show", @assignment, :method => :get %> 
+<br>
+<%= button_to "Back", assignments_path, :method => :get %>

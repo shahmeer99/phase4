@@ -11,8 +11,8 @@ class EmployeeTest < ActiveSupport::TestCase
   should validate_presence_of(:ssn)
   should validate_presence_of(:role)
   should validate_presence_of(:date_of_birth)
-  # tests for phone
- 
+  
+  # TESTING PHONE
   should allow_value("4122683259").for(:phone)
   should allow_value("412-268-3259").for(:phone)
   should allow_value("412.268.3259").for(:phone)
@@ -58,113 +58,104 @@ class EmployeeTest < ActiveSupport::TestCase
       remove_employees
     end
   
-    # now run the tests:
     # test employees must have unique ssn
     should "force employees to have unique ssn" do
-      repeat_ssn = FactoryBot.build(:employee, first_name: "Steve", last_name: "Crawford", ssn: "084-35-9822")
-      #deny repeat_ssn.valid?
-      assert_equal false , repeat_ssn.valid? 
+      ssn_copy = FactoryBot.build(:employee, first_name: "Steve", last_name: "Crawford", ssn: "084-35-9822")
+      assert_equal false , ssn_copy.valid? 
     end
     
-    # test scope younger_than_18
+    #SCOPE younger_than_18
     should "show there are two employees under 18" do
       assert_equal 2, Employee.younger_than_18.size
       assert_equal ["Crawford", "Wilson"], Employee.younger_than_18.map{|e| e.last_name}.sort
     end
     
-    # test scope younger_than_18
+    #SCOPE younger_than_18
     should "show there are five employees over 18" do
       assert_equal 5, Employee.is_18_or_older.size
       assert_equal ["Ahmad", "Gruberman", "Heimann", "Janeway", "Sisko"], Employee.is_18_or_older.map{|e| e.last_name}.sort
     end
     
-    # test the scope 'active'
+    #SCOPE 'active'
     should "shows that there are six active employees" do
       assert_equal 6, Employee.active.size
       assert_equal ["Ahmad", "Crawford", "Gruberman", "Heimann", "Janeway", "Sisko"], Employee.active.map{|e| e.last_name}.sort
     end
     
-    # test the scope 'inactive'
+    #SCOPE 'inactive'
     should "shows that there is one inactive employee" do
       assert_equal 1, Employee.inactive.size
       assert_equal ["Wilson"], Employee.inactive.map{|e| e.last_name}.sort
     end
     
-    # test the scope 'regulars'
+    #SCOPE 'regulars'
     should "shows that there are 3 regular employees: Ed, Cindy and Ralph" do
       assert_equal 3, Employee.regulars.size
       assert_equal ["Crawford","Gruberman","Wilson"], Employee.regulars.map{|e| e.last_name}.sort
     end
     
-    # test the scope 'managers'
+    #SCOPE 'managers'
     should "shows that there are 3 managers: Ben and Kathryn" do
       assert_equal 3, Employee.managers.size
       assert_equal ["Ahmad", "Janeway", "Sisko"], Employee.managers.map{|e| e.last_name}.sort
     end
     
-    # test the scope 'admins'
+    #SCOPE 'admins'
     should "shows that there is one admin: Alex" do
       assert_equal 1, Employee.admins.size
       assert_equal ["Heimann"], Employee.admins.map{|e| e.last_name}.sort
     end
     
-    # test the method 'name'
+    #METHOD 'name'
     should "shows name as last, first name" do
       assert_equal "Heimann, Alex", @alex.name
     end   
     
-    # test the method 'proper_name'
+    #METHOD 'proper_name'
     should "shows proper name as first and last name" do
       assert_equal "Alex Heimann", @alex.proper_name
     end 
     
-    # test the method 'current_assignment'
+    #METHOD 'current_assignment'
     should "shows return employee's current assignment if it exists" do
       create_stores
       create_assignments
-      # person with a current assignment
-      assert_equal @assign_cindy, @cindy.current_assignment # only 1 assignment ever
-      assert_equal @promote_ben, @ben.current_assignment # 2 assignments, returns right one
-      # person had assignments but has no current assignment
-      
-      
-      #CHECK
-      assert_nil @ed.current_assignment
+      assert_equal @assign_cindy, @cindy.current_assignment 
+      assert_equal @promote_ben, @ben.current_assignment 
       @assign_cindy.update_attribute(:end_date, Date.current)
       @cindy.reload
       assert_nil @cindy.current_assignment
-      # person with no assignments ever has no current assignment
       assert_nil @alex.current_assignment
       remove_assignments
       remove_stores
     end
     
-    # test the callback is working 'reformat_ssn'
+    # CALLBACK 'reformat_ssn'
     should "shows that Cindy's ssn is stripped of non-digits" do
       assert_equal "084359822", @cindy.ssn
     end
     
-    # test the callback is working 'reformat_phone'
+    # CALLBACK 'reformat_phone'
     should "shows that Ben's phone is stripped of non-digits" do
       assert_equal "4122682323", @ben.phone
     end
     
     should "show that an employee is only deleted if he works no shifts" do
       @cmu = FactoryBot.create(:store)
-      @msa2 = FactoryBot.create(:employee, first_name: "m", last_name: "sa", ssn: "134-35-9822", date_of_birth: 19.years.ago.to_date)
+      @msa2 = FactoryBot.create(:employee, first_name: "m", last_name: "sa", ssn: "123-12-1234", date_of_birth: 19.years.ago.to_date)
       @assignment_msa = FactoryBot.create(:assignment, employee: @msa2, store: @cmu, start_date: 6.months.ago.to_date, end_date: nil, pay_level: 6)
       @msa2.destroy
       assert @msa2.destroyed?
       @cmu.destroy
     end
     
-    # test the method 'over_18?'
+    #METHOD 'over_18?'
     should "shows that over_18? boolean method works" do
       assert @ed.over_18?
       assert_not_equal @cindy.over_18?, true
     end
     
-    # test the method 'age'
+    # METHOD 'age'
     should "shows that age method returns the correct value" do
       assert_equal 19, @ed.age
       assert_equal 17, @cindy.age
@@ -172,11 +163,11 @@ class EmployeeTest < ActiveSupport::TestCase
     end
     
     should "show that an employee is not deleted if he work shifts" do
-      @msa3 = FactoryBot.create(:employee, first_name: "m", last_name: "sa", ssn: "134-35-9822", date_of_birth: 19.years.ago.to_date)
+      @msa3 = FactoryBot.create(:employee, first_name: "m", last_name: "sa", ssn: "123-12-1234", date_of_birth: 19.years.ago.to_date)
       @cmu3 = FactoryBot.create(:store)
       @assignment_msa3 = FactoryBot.create(:assignment, employee: @msa3, store: @cmu3, start_date: 6.months.ago.to_date, end_date: nil, pay_level: 6)
       @shift = FactoryBot.create(:shift, assignment: @assignment_msa3)
-      # @shift_future = FactoryBot.create(:shift, assignment: @assignment_msa, date: Date.today + 10.days)
+      @shift_future = FactoryBot.create(:shift, assignment: @assignment_msa3, date: Date.today + 10.days)
       assert @msa3.worked_shift?
       @msa3.destroy
       assert !@msa3.destroyed?

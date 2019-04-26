@@ -20,28 +20,28 @@ class FlavorTest < ActiveSupport::TestCase
       remove_flavors
     end
     
-    #test scopes and methods 
-    
     should "have one active flavor" do
       assert_equal 1, Flavor.active.size
-      assert_equal ["Vanilla"], Flavor.active.map{|flavor| flavor.name}
+      assert_equal ["Rocky"], Flavor.active.map{|flavor| flavor.name}
     end
     
     should "have one inactive flavor" do
       assert_equal 1, Flavor.inactive.size
-      assert_equal ["Chocolate"], Flavor.inactive.map{|flavor| flavor.name}
-    end
-    
-    should "have flavors in alphabetical order" do
-      assert_equal 2, Flavor.alphabetical.size
-      assert_equal ["Chocolate", "Vanilla"], Flavor.alphabetical.map{|flavor| flavor.name}
+      assert_equal ["Coffee"], Flavor.inactive.map{|flavor| flavor.name}
     end
     
     should "make sure flavors are never destroyed, only made inactive" do
-      @vanilla.destroy
+      @rocky.destroy
       assert_equal 2, Flavor.inactive.size
-      assert_equal ["Chocolate", "Vanilla"], Flavor.alphabetical.map{|flavor| flavor.name}
+      assert_equal ["Coffee", "Rocky"], Flavor.alphabetical.map{|flavor| flavor.name}
     end
+
+    should "have flavors in alphabetical order" do
+      assert_equal 2, Flavor.alphabetical.size
+      assert_equal ["Coffee", "Rocky"], Flavor.alphabetical.map{|flavor| flavor.name}
+    end
+    
+
   
   end
 end

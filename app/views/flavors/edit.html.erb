@@ -2,5 +2,6 @@
 
 <%= render 'form', flavor: @flavor %>
 
-<%= link_to 'Show', @flavor %> |
-<%= link_to 'Back', flavors_path %>
+<%= button_to "Show", @flavor, :method => :get %> 
+<br>
+<%= button_to "Back", flavors_path, :method => :get %>

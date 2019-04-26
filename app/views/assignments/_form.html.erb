@@ -1,4 +1,4 @@
-<div class="row" style="background-color:white; positon:inherit;">
+<div class="row" style="background-color:white; positon:inherit; border-radius: 6px;padding: 12px 6px;">
   <div class="col s2">
   </div>
   
@@ -42,6 +42,8 @@
     <%= form.label :employee_id %>
     <%= form.collection_select(:employee_id, Employee.all, :first_name, :last_name, { :prompt => 'Select an Employee', :selected => @assignment.employee_id }, { class: 'form-control' }) %>
     </div>
+    
+  <br>
 
   <div class="actions">
     <%= form.submit %>

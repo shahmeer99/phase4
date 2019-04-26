@@ -6,7 +6,6 @@ class AssignmentTest < ActiveSupport::TestCase
    should belong_to(:store)
 
   # # Test basic validations
-  # # for pay level
   should allow_value(1).for(:pay_level)
   should allow_value(2).for(:pay_level)
   should allow_value(3).for(:pay_level)
@@ -39,24 +38,24 @@ class AssignmentTest < ActiveSupport::TestCase
       remove_assignments
     end
 
-    should "have a scope 'for_store' that works" do
+    should "have a scope 'for_store'" do
       assert_equal 4, Assignment.for_store(@cmu.id).size
       assert_equal 1, Assignment.for_store(@oakland.id).size
     end
 
-    should "have a scope 'for_employee' that works" do
+    should "have a scope 'for_employee'" do
       assert_equal 2, Assignment.for_employee(@ben.id).size
       assert_equal 1, Assignment.for_employee(@kathryn.id).size
     end
 
-    should "have a scope 'for_pay_level' that works" do
+    should "have a scope 'for_pay_level'" do
       assert_equal 2, Assignment.for_pay_level(1).size
       assert_equal 0, Assignment.for_pay_level(2).size
       assert_equal 2, Assignment.for_pay_level(3).size
       assert_equal 1, Assignment.for_pay_level(4).size
     end
 
-    should "have a scope 'for_role' that works" do
+    should "have a scope 'for_role'" do
       assert_equal 2, Assignment.for_role("employee").size
       assert_equal 3, Assignment.for_role("manager").size
     end
@@ -88,7 +87,6 @@ class AssignmentTest < ActiveSupport::TestCase
     end
 
     should "allow for a end date in the past (or today) but after the start date" do
-      # Note that we've been testing end_date: nil for a while now so safe to assume works...
       @assignment_alex = FactoryBot.build(:assignment, employee: @alex, store: @oakland, start_date: 3.months.ago.to_date, end_date: 1.month.ago.to_date)
       assert @assignment_alex.valid?
       @assignment_alex2 = FactoryBot.build(:assignment, employee: @alex, store: @oakland, start_date: 3.weeks.ago.to_date, end_date: Date.current)
@@ -96,7 +94,6 @@ class AssignmentTest < ActiveSupport::TestCase
     end
 
     should "not allow for a end date in the future or before the start date" do
-      # since Ed finished his last assignment a month ago, let's try to assign the lovable loser again ...
       @assignment_ed2 = FactoryBot.build(:assignment, employee: @ed, store: @oakland, start_date: 2.weeks.ago.to_date, end_date: 3.weeks.ago.to_date)
       assert_not_equal true,@assignment_ed2.valid?
       @assignment_ed3 = FactoryBot.build(:assignment, employee: @ed, store: @oakland, start_date: 2.weeks.ago.to_date, end_date: 3.weeks.from_now.to_date)

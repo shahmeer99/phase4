@@ -25,5 +25,6 @@
   <%= @assignment.employee_id %>
 </p>
 </div>
-<%= link_to 'Edit', edit_assignment_path(@assignment) %> |
-<%= link_to 'Back', assignments_path %>
+
+<%= button_to "Edit", edit_assignment_path(@assignment), :method => :get %>
+<%= button_to "Back", assignments_path, :method => :get %>

@@ -57,92 +57,89 @@ class ShiftTest < ActiveSupport::TestCase
       assert @past_shift.completed?
       @past_shift.destroy
     end
+    
+    should "Check if start_now works" do
+      @new_shift = FactoryBot.create(:shift, assignment: @promote_ben, start_time: Time.now)
+      @new_shift.start_now
+      @new_shift.destroy
+    end
 
+    should "Check if end_now works" do
+      @shift = FactoryBot.create(:shift, assignment: @promote_ben, start_time: Date.current + 2.hours)
+      @shift.end_now
+      @shift.destroy
+    end
+    
     should "Check if end_time automatically set" do
       @shift = FactoryBot.create(:shift, assignment: @promote_ben, start_time: Time.now)
       assert_in_delta 1, @shift.end_time.to_i, Time.now.to_i + 3.hours.to_i
       @shift.destroy
     end
     
-    #CHECK
-    should "Check if start_now works" do
-      @new_shift = FactoryBot.create(:shift, assignment: @promote_ben, start_time: Time.now)
-      @new_shift.start_now
-      # assert_in_delta 1, Time.now.to_i, @new_shift.start_time.to_i
-      @new_shift.destroy
-    end
-
-    #CHECK
-    should "Check if end_now works" do
-      @shift = FactoryBot.create(:shift, assignment: @promote_ben, start_time: Date.current + 2.hours)
-      @shift.end_now
-      # assert_in_delta 1, Time.now.to_i, @shift.end_time.to_i
-      @shift.destroy
-    end
-    
-    should "have a scope completed that works" do
+    should "have a scope completed " do
       @past_shift = FactoryBot.create(:shift, assignment: @promote_ben, date: Date.today - 100.days)
-      @test_janitor = FactoryBot.create(:job)
-      @shift_past_janitor = FactoryBot.create(:shift_job, shift: @past_shift, job: @test_janitor)
+      @test_cleaner = FactoryBot.create(:job)
+      @shift_past_cleaner = FactoryBot.create(:shift_job, shift: @past_shift, job: @test_cleaner)
 
       assert_equal [3], Shift.completed.map{|shift| shift.id}
+      
       @past_shift.destroy
-      @test_janitor.destroy
-      @shift_past_janitor.destroy
+      @test_cleaner.destroy
+      @shift_past_cleaner.destroy
     end
     
-    should "have a scope incompleted that works" do
-      @past_shift = FactoryBot.create(:shift, assignment: @promote_ben, date: Date.today - 100.days)
-      @test_janitor = FactoryBot.create(:job)
-      @shift_past_janitor = FactoryBot.create(:shift_job, shift: @past_shift, job: @test_janitor)
-      assert_equal [1, 2, 3], Shift.incompleted.map{|shift| shift.id}.sort
-    end
-
-    should "have a scope for_store that works" do
+    should "have a scope for_store " do
       @past_shift = FactoryBot.create(:shift, assignment: @promote_ben, date: Date.today - 100.days)
       @test_janitor = FactoryBot.create(:job)
       @shift_past_janitor = FactoryBot.create(:shift_job, shift: @past_shift, job: @test_janitor)
       assert_equal [1, 2, 3], Shift.for_store(3).map{|shift| shift.id}.sort
     end
-
-    should "have a scope for_employee that works" do
+    
+    should "have a scope incompleted " do
       @past_shift = FactoryBot.create(:shift, assignment: @promote_ben, date: Date.today - 100.days)
-      @test_janitor = FactoryBot.create(:job)
-      @shift_past_janitor = FactoryBot.create(:shift_job, shift: @past_shift, job: @test_janitor)
+      @test_cleaner = FactoryBot.create(:job)
+      @shift_past_cleaner = FactoryBot.create(:shift_job, shift: @past_shift, job: @test_cleaner)
+      assert_equal [1, 2, 3], Shift.incompleted.map{|shift| shift.id}.sort
+    end
+
+    should "have a scope for_employee " do
+      @past_shift = FactoryBot.create(:shift, assignment: @promote_ben, date: Date.today - 100.days)
+      @test_cleaner = FactoryBot.create(:job)
+      @shift_past_cleaner = FactoryBot.create(:shift_job, shift: @past_shift, job: @test_cleaner)
       assert_equal [1, 2], Shift.for_employee(2).map{|shift| shift.id}.sort
     end
     
-    should "have scope for past that works" do
+    should "have scope for past " do
       @past_shift = FactoryBot.create(:shift, assignment: @promote_ben, date: Date.today - 100.days)
       assert_equal [1, 3], Shift.past.map{|shift| shift.id}.sort
       @past_shift.destroy
     end
     
-    should "have a scope upcoming that works" do
+    should "have a scope upcoming " do
       assert_equal [2], Shift.upcoming.map{|shift| shift.id}.sort
     end
     
     
-    should "have a scope for_next_days that works" do
+    should "have a scope for_next_days " do
       assert_equal [], Shift.for_next_days(3).map{|shift| shift.id}.sort
       assert_equal [2], Shift.for_next_days(6).map{|shift| shift.id}.sort
     end
     
-    should "have a scope for_past_days that works" do
+    should "have a scope for_past_days " do
       @past_shift = FactoryBot.create(:shift, assignment: @promote_ben, date: Date.today - 90.days)
       assert_equal [], Shift.for_past_days(6).map{|shift| shift.id}.sort
       @past_shift.destroy
     end
     
-    should "have a scope chronological that works" do
+    should "have a scope chronological " do
       @past_shift = FactoryBot.create(:shift, assignment: @promote_ben, date: Date.today - 90.days)
       assert_equal [1, 3, 2], Shift.chronological.map{|shift| shift.id}
       @past_shift.destroy
     end
     
-    should "have a scope by_store that works" do
-      @store = FactoryBot.create(:store, name: "store", phone: "182-331-4321")
-      @msa = FactoryBot.create(:employee, first_name: "Shahmeer", last_name: "Ahmad", ssn: "453-67-6125", date_of_birth: 20.years.ago.to_date)
+    should "have a scope by_store " do
+      @store = FactoryBot.create(:store, name: "store", phone: "123-123-1234")
+      @msa = FactoryBot.create(:employee, first_name: "Shahmeer", last_name: "Ahmad", ssn: "123-12-1234", date_of_birth: 20.years.ago.to_date)
       @assignment = FactoryBot.create(:assignment, store: @store, employee: @msa, start_date: 4.months.ago.to_date, end_date: nil)
       @past_shift = FactoryBot.create(:shift, assignment: @assignment, date: Date.today - 90.days)
       assert_equal [1, 2, 3], Shift.by_store.map{|shift| shift.id}
@@ -152,9 +149,9 @@ class ShiftTest < ActiveSupport::TestCase
       @msa.destroy
     end
     
-    should "have a scope by_employee that works" do
-      @store = FactoryBot.create(:store, name: "store", phone: "182-331-4321")
-      @msa = FactoryBot.create(:employee, first_name: "Shahmeer", last_name: "Ahmad", ssn: "453-67-6125", date_of_birth: 20.years.ago.to_date)
+    should "have a scope by_employee " do
+      @store = FactoryBot.create(:store, name: "store", phone: "123-123-1234")
+      @msa = FactoryBot.create(:employee, first_name: "Shahmeer", last_name: "Ahmad", ssn: "123-12-1234", date_of_birth: 20.years.ago.to_date)
       @assignment = FactoryBot.create(:assignment, store: @store, employee: @msa, start_date: 4.months.ago.to_date, end_date: nil)
       @past_shift = FactoryBot.create(:shift, assignment: @assignment, date: Date.today - 90.days)
       assert_equal [3, 1, 2], Shift.by_employee.map{|shift| shift.id}
@@ -165,8 +162,8 @@ class ShiftTest < ActiveSupport::TestCase
     end
     
     should "not allow shift to be added to past assignment" do
-      @store = FactoryBot.create(:store, name: "store", phone: "182-331-4321")
-      @msa = FactoryBot.create(:employee, first_name: "Shahmeer", last_name: "Ahmad", ssn: "453-67-6125", date_of_birth: 20.years.ago.to_date)
+      @store = FactoryBot.create(:store, name: "store", phone: "123-123-1234")
+      @msa = FactoryBot.create(:employee, first_name: "Shahmeer", last_name: "Ahmad", ssn: "123-12-1234", date_of_birth: 20.years.ago.to_date)
       @assignment = FactoryBot.create(:assignment, store: @store, employee: @msa, start_date: 4.months.ago.to_date, end_date: 2.months.ago.to_date)
       assert_raise(Exception) {FactoryBot.create(:shift, assignment: @assignment, date: Date.today - 90.days)}
       @assignment.destroy

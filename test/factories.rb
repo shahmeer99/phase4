@@ -38,8 +38,8 @@ FactoryBot.define do
   end
   
    factory :job do
-    name {"Janitor"}
-    description {"Mop floors, clean tables/bathrooms, etc"}
+    name {"Cleaner"}
+    description {"Clean rooms"}
     active {true}
   end
   
@@ -48,14 +48,14 @@ FactoryBot.define do
   end
 
   factory :flavor do
-    name {"Vanilla"}
+    name {"Rocky"}
     active {true}
   end
 
   factory :user do
     association :employee
-    email {"edg@cmu.edu"}
-    password_digest {"edg"}
+    email {"base@gmail.com"}
+    password_digest {"base"}
   end
 
   factory :store_flavor do

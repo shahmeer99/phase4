@@ -37,5 +37,6 @@
 </p>
 </div>
 </div>
-<%= link_to 'Edit', edit_employee_path(@employee) %> |
-<%= link_to 'Back', employees_path %>
+
+<%= button_to "Edit", edit_employee_path(@employee), :method => :get %>
+<%= button_to "Back", employees_path, :method => :get %>

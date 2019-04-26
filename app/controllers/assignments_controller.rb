@@ -5,7 +5,8 @@ class AssignmentsController < ApplicationController
   # GET /assignments
   # GET /assignments.json
   def index
-    @assignments = Assignment.all.paginate(:page => params[:page]).per_page(10) #only 10 per page 
+    @current_assignments = Assignment.current.by_store.by_employee.chronological.paginate(page: params[:page]).per_page(15)
+    @past_assignments = Assignment.past.by_employee.by_store.paginate(page: params[:page]).per_page(15) 
   end
 
   # GET /assignments/1
@@ -29,7 +30,7 @@ class AssignmentsController < ApplicationController
 
     respond_to do |format|
       if @assignment.save
-        format.html { redirect_to @assignment, notice: 'Assignment was successfully created.' }
+        format.html { redirect_to @assignment, notice: "#{@assignment.employee.proper_name} is assigned to #{@assignment.store.name}." }
         format.json { render :show, status: :created, location: @assignment }
       else
         format.html { render :new }
@@ -43,7 +44,7 @@ class AssignmentsController < ApplicationController
   def update
     respond_to do |format|
       if @assignment.update(assignment_params)
-        format.html { redirect_to @assignment, notice: 'Assignment was successfully updated.' }
+        format.html { redirect_to @assignment, notice: "#{@assignment.employee.proper_name}'s assignment to #{@assignment.store.name} is updated." }
         format.json { render :show, status: :ok, location: @assignment }
       else
         format.html { render :edit }
@@ -57,7 +58,7 @@ class AssignmentsController < ApplicationController
   def destroy
     @assignment.destroy
     respond_to do |format|
-      format.html { redirect_to assignments_url, notice: 'Assignment was successfully destroyed.' }
+      format.html { redirect_to assignments_url, notice: "Successfully removed #{@assignment.employee.proper_name} from #{@assignment.store.name}." }
       format.json { head :no_content }
     end
   end
@@ -71,5 +72,9 @@ class AssignmentsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def assignment_params
       params.require(:assignment).permit(:start_date, :end_date, :pay_level, :store_id, :employee_id)
+    end
+    
+    def page_params
+      params.permit(:page)
     end
 end

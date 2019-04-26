@@ -2,13 +2,13 @@ module Contexts
   module FlavorContexts
       
     def create_flavors
-      @vanilla = FactoryBot.create(:flavor)
-  	  @chocolate = FactoryBot.create(:flavor, name: "Chocolate", active: false)
+      @rocky = FactoryBot.create(:flavor)
+  	  @coffee = FactoryBot.create(:flavor, name: "Coffee", active: false)
   	end
 
   	def remove_flavors
-  	  @vanilla.destroy
-  	  @chocolate.destroy
+  	  @rocky.destroy
+  	  @coffee.destroy
   	end
   
   end

@@ -40,6 +40,7 @@ gem 'will_paginate'
 gem 'simple_form'
 gem 'jquery-rails'
 gem 'materialize-sass'
+gem 'mini_racer'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

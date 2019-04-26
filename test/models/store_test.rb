@@ -48,40 +48,38 @@ class StoreTest < ActiveSupport::TestCase
       remove_stores
     end
   
-    # now run the tests:
-    # test one of each factory (not really required, but not a bad idea)
     should "show that all factories are properly created" do
       assert_equal "CMU", @cmu.name
       assert @oakland.active
       assert_equal false, @hazelwood.active
     end
     
-    # test stores must have unique names
+    # TEST UNIQUENESS OF STORE NAME
     should "force stores to have unique names" do
       repeat_store = FactoryBot.build(:store, name: "CMU")
       assert_equal false, repeat_store.valid?
     end
     
-    # test the callback is working 'reformat_phone'
+    # CALLBACK is working 'reformat_phone'
     should "shows that Oakland's phone is stripped of non-digits" do
       assert_equal "4122688211", @oakland.phone
     end
     
-    # test the scope 'alphabetical'
-    should "shows that there are three stores in in alphabetical order" do
-      assert_equal ["CMU", "Hazelwood", "Oakland"], Store.alphabetical.map{|s| s.name}
-    end
-    
-    # test the scope 'active'
+    # SCOPE 'active'
     should "shows that there are two active stores" do
       assert_equal 2, Store.active.size
       assert_equal ["CMU", "Oakland"], Store.active.alphabetical.map{|s| s.name}
     end
     
-    # test the scope 'inactive'
+    # SCOPE 'inactive'
     should "shows that there is one inactive store" do
       assert_equal 1, Store.inactive.size
       assert_equal ["Hazelwood"], Store.inactive.alphabetical.map{|s| s.name}
+    end
+    
+    # SCOPE 'alphabetical'
+    should "shows that there are three stores in in alphabetical order" do
+      assert_equal ["CMU", "Hazelwood", "Oakland"], Store.alphabetical.map{|s| s.name}
     end
   
   end
