@@ -1,4 +1,21 @@
-<%= form_with(model: store_flavor, local: true) do |form| %>
+
+
+  
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>
+
+
+
+
+<div class="row" style="background-color:white; positon:inherit; border-radius: 6px;padding: 12px 6px;">
+  <div class="col s2">
+  </div>
+  
+  <div id="col s8 center">
+  <%= form_with(model: store_flavor, local: true) do |form| %>
   <% if store_flavor.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(store_flavor.errors.count, "error") %> prohibited this store_flavor from being saved:</h2>
@@ -12,16 +29,22 @@
   <% end %>
 
   <div class="field">
-    <%= form.label :store_id %>
-    <%= form.text_field :store_id %>
+        <%= form.label :store_id %>
+        <%= form.collection_select(:store_id, Store.all, :name, :name, { :prompt => 'Select a Store', :selected => @store_flavor.store_id }, { class: 'form-control' }) %>
   </div>
-
+  
   <div class="field">
-    <%= form.label :flavor_id %>
-    <%= form.text_field :flavor_id %>
+        <%= form.label :flavor_id %>
+        <%= form.collection_select(:flavor_id, Flavor.all, :name, :name, { :prompt => 'Select a Flavor', :selected => @store_flavor.flavor_id }, { class: 'form-control' }) %>
   </div>
 
   <div class="actions">
-    <%= form.submit %>
+    <%= button_to "Create StoreFlavor", form.submit, :style => "background-color: #d147a3 ;color: white; font-size: 16px;",
+ :method => :get %>
   </div>
 <% end %>
+</div>
+  
+  <div class="col s2">
+  </div>
+</div>

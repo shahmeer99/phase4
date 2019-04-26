@@ -1,5 +1,5 @@
 <p id="notice"><%= notice %></p>
-
+<div style="font-weight:bold; background-color:white; width:300px; padding: 12px 24px; border-radius: 6px;">
 <p>
   <strong>Store:</strong>
   <%= @store_flavor.store %>
@@ -9,6 +9,10 @@
   <strong>Flavor:</strong>
   <%= @store_flavor.flavor %>
 </p>
-
-<%= link_to 'Edit', edit_store_flavor_path(@store_flavor) %> |
-<%= link_to 'Back', store_flavors_path %>
+</div>
+<br>
+<%= button_to "Edit", edit_store_flavor_path(@store_flavor), :style => "background-color: #d147a3 ;color: white; font-size: 16px;",
+ :method => :get %>
+<br>
+<%= button_to "Back", store_flavors_path, :style => "background-color: #d147a3 ;color: white; font-size: 16px;",
+ :method => :get %>
